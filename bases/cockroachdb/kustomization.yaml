@@ -23,3 +23,17 @@ resources:
   - ./templates/serviceaccount-certSelfSigner.yaml
   - ./templates/serviceaccount.yaml
   - ./templates/statefulset.yaml
+
+patches:
+  - target:
+      group: batch
+      version: v1beta1
+      kind: CronJob
+      name: cockroachdb-rotate-self-signer
+    path: chart-patch.yaml
+  - target:
+      group: batch
+      version: v1beta1
+      kind: CronJob
+      name: cockroachdb-rotate-self-signer-client
+    path: chart-patch.yaml

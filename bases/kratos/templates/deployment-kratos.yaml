@@ -36,7 +36,7 @@ spec:
       annotations:        
         checksum/kratos-config: 4e82fa0677335948e37d84d390c101587bf9e67da8596ed0828c7375e36b3afb
         checksum/kratos-templates: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/kratos-secrets: 384c0b4a1357fbf15087671b49820cde72e31a6bec427644706e8b652d71df74
+        checksum/kratos-secrets: b3b09e72e2a5554f391659270c32f7450c5dfb55115c61b67c226cff5e7426b2
     spec:
       initContainers:
       volumes:
