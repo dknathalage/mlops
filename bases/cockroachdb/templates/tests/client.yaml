@@ -1,0 +1,25 @@
+---
+# Source: cockroachdb/templates/tests/client.yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: cockroachdb-test
+  namespace: "default"
+  annotations:
+    helm.sh/hook: test-success
+spec:
+  restartPolicy: Never
+  containers:
+    - name: client-test
+      image: "cockroachdb/cockroach:v25.2.1"
+      imagePullPolicy: "IfNotPresent"
+      command:
+        - /cockroach/cockroach
+        - sql
+        - --insecure
+        - --host
+        - cockroachdb-public.default
+        - --port
+        - "26257"
+        - -e
+        - SHOW DATABASES;

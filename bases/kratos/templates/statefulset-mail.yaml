@@ -30,7 +30,7 @@ spec:
       annotations:        
         checksum/kratos-config: 4e82fa0677335948e37d84d390c101587bf9e67da8596ed0828c7375e36b3afb
         checksum/kratos-templates: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/kratos-secrets: 50f7a913e573aecbd367cf2812173de4ecf129d0fffda467fb2245c9d4eab505
+        checksum/kratos-secrets: 94fedb589e43afc8ced3fd77c3b1d1c95dd02191cfceadedf44bd59ab1984a3e
     spec:
       serviceAccountName: kratos
       terminationGracePeriodSeconds: 60
