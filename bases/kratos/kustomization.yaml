@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./templates/configmap-config.yaml
+  - ./templates/deployment-kratos.yaml
+  - ./templates/rbac-job.yaml
+  - ./templates/rbac.yaml
+  - ./templates/secrets.yaml
+  - ./templates/service-admin.yaml
+  - ./templates/service-public.yaml
+  - ./templates/statefulset-mail.yaml
+  - ./templates/svc-statefulset.yaml

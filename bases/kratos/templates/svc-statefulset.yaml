@@ -1,0 +1,28 @@
+---
+# Source: kratos/templates/svc-statefulset.yaml
+# Headless Service for StatefulSet. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#limitations 
+# and https://kubernetes.io/docs/concepts/services-networking/service/#headless-services for details.
+apiVersion: v1
+kind: Service
+metadata:
+  name: kratos-courier
+  namespace: default
+  labels:
+    app.kubernetes.io/component: courier
+    app.kubernetes.io/name: kratos
+    helm.sh/chart: kratos-0.55.0
+    app.kubernetes.io/instance: kratos
+    app.kubernetes.io/version: "v1.3.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 80
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app.kubernetes.io/name: kratos-courier
+    app.kubernetes.io/instance: kratos

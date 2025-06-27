@@ -1,0 +1,14 @@
+---
+# Source: kratos/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kratos
+  namespace: default
+  labels:
+    app.kubernetes.io/name: kratos
+    helm.sh/chart: kratos-0.55.0
+    app.kubernetes.io/instance: kratos
+    app.kubernetes.io/version: "v1.3.1"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
