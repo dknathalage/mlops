@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: identity
+
+resources:
+  - ./templates/configmap.yaml
+  - ./templates/deployment.yaml
+  - ./templates/initjob.yaml
+  - ./templates/secret_zitadel-masterkey.yaml
+  - ./templates/service.yaml
+  - ./templates/serviceaccount.yaml
+  - ./templates/setupjob.yaml

@@ -1,0 +1,67 @@
+---
+# Source: zitadel/templates/initjob.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "zitadel-init"
+  labels:
+    helm.sh/chart: zitadel-8.13.4
+    app.kubernetes.io/name: zitadel
+    app.kubernetes.io/instance: zitadel
+    app.kubernetes.io/version: "v2.67.2"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: init
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "1"
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: zitadel-8.13.4
+        app.kubernetes.io/name: zitadel
+        app.kubernetes.io/instance: zitadel
+        app.kubernetes.io/version: "v2.67.2"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: init
+    spec:
+      serviceAccountName: zitadel
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      enableServiceLinks: false
+      restartPolicy: OnFailure
+      containers:
+        - name: "zitadel-init"
+          securityContext:
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 1000
+          image: "ghcr.io/zitadel/zitadel:v2.67.2"
+          imagePullPolicy: IfNotPresent
+          args:
+            - init
+            - --config
+            - /config/zitadel-config-yaml
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          volumeMounts:
+          - name: zitadel-config-yaml
+            mountPath: /config
+            readOnly: true
+          resources:
+              {}
+      volumes:
+      - name: zitadel-config-yaml
+        configMap:
+          name: zitadel-config-yaml
+          defaultMode: 0440

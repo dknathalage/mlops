@@ -1,0 +1,102 @@
+---
+# Source: zitadel/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zitadel
+  labels:
+    helm.sh/chart: zitadel-8.13.4
+    app.kubernetes.io/name: zitadel
+    app.kubernetes.io/instance: zitadel
+    app.kubernetes.io/version: "v2.67.2"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: start
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zitadel
+      app.kubernetes.io/instance: zitadel
+      app.kubernetes.io/component: start
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: 58f812fdb931fe14de6917c34f47f93c0273c8056222d8a6c0500c69901a57bc
+        checksum/secret-db-ssl-ca-crt: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/secret-zitadel-secrets: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      labels:
+        helm.sh/chart: zitadel-8.13.4
+        app.kubernetes.io/name: zitadel
+        app.kubernetes.io/instance: zitadel
+        app.kubernetes.io/version: "v2.67.2"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: start
+    spec:
+      serviceAccountName: zitadel
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      enableServiceLinks: false
+      containers:
+        - name: zitadel
+          securityContext:
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 1000
+          image: "ghcr.io/zitadel/zitadel:v2.67.2"
+          imagePullPolicy: IfNotPresent
+          args:
+            - start
+            - --config
+            - /config/zitadel-config-yaml
+            - --masterkeyFromEnv
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: ZITADEL_MASTERKEY
+              valueFrom:
+                secretKeyRef:
+                  name: zitadel-masterkey
+                  key: masterkey
+          ports:
+          - containerPort: 8080
+            name: http2-server
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /debug/healthz
+              port: http2-server
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /debug/ready
+              port: http2-server
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /debug/ready
+              port: http2-server
+              scheme: HTTP
+            periodSeconds: 1
+            failureThreshold: 30
+          volumeMounts:
+          - name: zitadel-config-yaml
+            mountPath: /config
+            readOnly: true
+          resources:
+              {}
+      volumes:
+      - name: zitadel-config-yaml
+        configMap:
+          name: zitadel-config-yaml

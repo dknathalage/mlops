@@ -1,17 +1,17 @@
 
 helm.add:
-	helm repo add ory https://k8s.ory.sh/helm/charts || true
+	helm repo add zitadel https://charts.zitadel.com || true
 	helm repo add cockroachdb https://charts.cockroachdb.com || true
 
 helm.update:
-	helm repo update ory
+	helm repo update zitadel
 	helm repo update cockroachdb
 
-helm.render: helm.add helm.update helm.render.kratos helm.render.cockroachdb
+helm.render: helm.add helm.update helm.render.zitadel helm.render.cockroachdb
 
-helm.render.kratos: 
-	rm -rf ./bases/kratos/templates
-	helm template kratos ory/kratos --output-dir ./bases
+helm.render.zitadel:
+	rm -rf ./bases/zitadel/templates
+	helm template zitadel zitadel/zitadel  --values ./bases/zitadel/values.yaml --output-dir ./bases
 
 helm.render.cockroachdb:
 	rm -rf ./bases/cockroachdb/templates
