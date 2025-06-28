@@ -1,6 +1,0 @@
----
-# Source: cockroachdb/templates/service.visus.yaml
-# This service only exists to create DNS entries for each pod in
-# the StatefulSet such that they can resolve each other's IP addresses.
-# It does not create a load-balanced ClusterIP and should not be used directly
-# by clients in most circumstances.

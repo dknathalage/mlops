@@ -17,10 +17,30 @@ metadata:
 data:
   zitadel-config-yaml: |-
     
-    ExternalSecure: true
+    Database:
+      Postgres:
+        Admin:
+          SSL:
+            Mode: disable
+          Username: postgres
+        Database: zitadel
+        Host: db-postgresql
+        MaxConnIdleTime: 5m
+        MaxConnLifetime: 30m
+        MaxIdleConns: 10
+        MaxOpenConns: 20
+        Port: 5432
+        User:
+          SSL:
+            Mode: disable
+          Username: postgres
+    ExternalDomain: 127.0.0.1.sslip.io
+    ExternalSecure: false
     Machine:
       Identification:
         Hostname:
           Enabled: true
         Webhook:
           Enabled: false
+    TLS:
+      Enabled: false

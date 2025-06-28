@@ -1,0 +1,17 @@
+---
+# Source: postgresql/templates/primary/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-postgresql-configuration
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 17.5.0
+    helm.sh/chart: postgresql-16.7.14
+    app.kubernetes.io/component: primary
+data:
+  pg_hba.conf: |
+    host all all all trust

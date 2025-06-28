@@ -1,13 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: identity
-
 resources:
-  - ./templates/configmap.yaml
-  - ./templates/deployment.yaml
-  - ./templates/initjob.yaml
-  - ./templates/secret_zitadel-masterkey.yaml
-  - ./templates/service.yaml
-  - ./templates/serviceaccount.yaml
-  - ./templates/setupjob.yaml
+  - ./rendered/zitadel/templates/configmap.yaml
+  - ./rendered/zitadel/templates/deployment.yaml
+  - ./rendered/zitadel/templates/initjob.yaml
+  - ./rendered/zitadel/templates/secret_zitadel-masterkey.yaml
+  - ./rendered/zitadel/templates/service.yaml
+  - ./rendered/zitadel/templates/serviceaccount.yaml
+  - ./rendered/zitadel/templates/setupjob.yaml
+
+  - ./rendered/postgresql/templates/secrets.yaml
+  - ./rendered/postgresql/templates/serviceaccount.yaml
+  - ./rendered/postgresql/templates/primary/configmap.yaml
+  - ./rendered/postgresql/templates/primary/networkpolicy.yaml
+  - ./rendered/postgresql/templates/primary/pdb.yaml
+  - ./rendered/postgresql/templates/primary/statefulset.yaml
+  - ./rendered/postgresql/templates/primary/svc-headless.yaml
+  - ./rendered/postgresql/templates/primary/svc.yaml
