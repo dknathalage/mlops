@@ -35,6 +35,7 @@ data:
             Mode: disable
           Username: postgres
     ExternalDomain: 127.0.0.1
+    ExternalPort: 8080
     ExternalSecure: false
     Machine:
       Identification:

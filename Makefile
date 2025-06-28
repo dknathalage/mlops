@@ -14,7 +14,9 @@ helm.render.zitadel:
 	helm template zitadel zitadel/zitadel  --values ./values/zitadel/zitadel.values.yaml --output-dir ./bases/zitadel/rendered
 	helm template postgres postgres/postgresql --values ./values/zitadel/postgres.values.yaml --output-dir ./bases/zitadel/rendered
 
-apply: helm.render
+render: helm.render
+
+apply:
 	kubectl apply -k overlays/
 
 delete:

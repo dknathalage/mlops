@@ -3,6 +3,7 @@ zitadel:
   configmapConfig:
     ExternalSecure: false
     ExternalDomain: 127.0.0.1
+    ExternalPort: 8080
     TLS:
       Enabled: false
     Database:

@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 391b23a622a126cd3b332769bd458eb1b81000dbe293ac216eb2ea00ec702195
+        checksum/configmap: 4c98c91d49f4697124a47b6c08dc55c648ec653a895582291b262be456f0c950
         checksum/secret-db-ssl-ca-crt: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/secret-zitadel-secrets: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
