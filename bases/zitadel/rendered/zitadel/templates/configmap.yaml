@@ -24,7 +24,7 @@ data:
             Mode: disable
           Username: postgres
         Database: zitadel
-        Host: db-postgresql
+        Host: postgres-postgresql
         MaxConnIdleTime: 5m
         MaxConnLifetime: 30m
         MaxIdleConns: 10
@@ -34,7 +34,7 @@ data:
           SSL:
             Mode: disable
           Username: postgres
-    ExternalDomain: 127.0.0.1.sslip.io
+    ExternalDomain: 127.0.0.1
     ExternalSecure: false
     Machine:
       Identification:

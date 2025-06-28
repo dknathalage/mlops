@@ -2,12 +2,12 @@ zitadel:
   masterkey: x123456789012345678901234567891y
   configmapConfig:
     ExternalSecure: false
-    ExternalDomain: 127.0.0.1.sslip.io
+    ExternalDomain: 127.0.0.1
     TLS:
       Enabled: false
     Database:
       Postgres:
-        Host: db-postgresql
+        Host: postgres-postgresql
         Port: 5432
         Database: zitadel
         MaxOpenConns: 20

@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: 62cebe770a8a7ca250c8298f9b108ae1c21df3f3744dd90d6965ae71f1d8018c
+        checksum/configmap: 391b23a622a126cd3b332769bd458eb1b81000dbe293ac216eb2ea00ec702195
         checksum/secret-db-ssl-ca-crt: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/secret-zitadel-secrets: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
       labels:
@@ -73,7 +73,7 @@ spec:
               port: http2-server
               httpHeaders:
                 - name: Host
-                  value: 127.0.0.1.sslip.io
+                  value: 127.0.0.1
               scheme: HTTP
             initialDelaySeconds: 0
             periodSeconds: 5
@@ -84,7 +84,7 @@ spec:
               port: http2-server
               httpHeaders:
                 - name: Host
-                  value: 127.0.0.1.sslip.io
+                  value: 127.0.0.1
               scheme: HTTP
             initialDelaySeconds: 0
             periodSeconds: 5
@@ -95,7 +95,7 @@ spec:
               port: http2-server
               httpHeaders:
                 - name: Host
-                  value: 127.0.0.1.sslip.io
+                  value: 127.0.0.1
               scheme: HTTP
             periodSeconds: 1
             failureThreshold: 30
