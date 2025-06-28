@@ -1,0 +1,34 @@
+---
+# Source: mlflow/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlflow-env-configmap
+  labels:
+    app: mlflow
+    chart: mlflow-1.3.0
+    release: mlflow
+    heritage: Helm
+data:
+  PGHOST: postgres-postgresql
+  PGPORT: "5432"
+  PGDATABASE: mlflow
+  MLFLOW_CONFIGURE_LOGGING: "true"
+  MLFLOW_LOGGING_LEVEL: "INFO"
+---
+# Source: mlflow/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlflow-migrations
+  labels:
+    app: mlflow
+    chart: mlflow-1.3.0
+    release: mlflow
+    heritage: Helm
+data:
+  migrations.py: |-
+    from mlflow.store.db import utils
+    import os
+    engine = utils.create_sqlalchemy_engine_with_retry("postgresql://")
+    utils._initialize_tables(engine)

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./rendered/mlflow/templates/configmap.yaml
+  - ./rendered/mlflow/templates/deployment.yaml
+  - ./rendered/mlflow/templates/flask_secret.yaml
+  - ./rendered/mlflow/templates/secret.yaml
+  - ./rendered/mlflow/templates/service.yaml
+  - ./rendered/mlflow/templates/serviceaccount.yaml
+  - ./rendered/postgresql/templates/secrets.yaml
+  - ./rendered/postgresql/templates/serviceaccount.yaml
+  - ./rendered/postgresql/templates/primary/configmap.yaml
+  - ./rendered/postgresql/templates/primary/networkpolicy.yaml
+  - ./rendered/postgresql/templates/primary/pdb.yaml
+  - ./rendered/postgresql/templates/primary/statefulset.yaml
+  - ./rendered/postgresql/templates/primary/svc-headless.yaml
+  - ./rendered/postgresql/templates/primary/svc.yaml

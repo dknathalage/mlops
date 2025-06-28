@@ -1,0 +1,128 @@
+---
+# Source: mlflow/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  labels:
+    helm.sh/chart: mlflow-1.3.0
+    app: mlflow
+    app.kubernetes.io/name: mlflow
+    app.kubernetes.io/instance: mlflow
+    version: "3.1.1"
+    app.kubernetes.io/version: "3.1.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  selector:
+    matchLabels:
+      app: mlflow
+      app.kubernetes.io/name: mlflow
+      app.kubernetes.io/instance: mlflow
+  template:
+    metadata:
+      annotations:
+        checksum/config: 921a8c3ae230a236ecd02f02525d4d5c7699676c86980bad4718f38585710042
+      labels:
+        app: mlflow
+        app.kubernetes.io/name: mlflow
+        app.kubernetes.io/instance: mlflow
+    spec:
+      serviceAccountName: mlflow
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: "mlflow-db-migration"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+          image: "burakince/mlflow:3.1.1"
+          imagePullPolicy: IfNotPresent
+          resources:
+            {}
+          envFrom:
+            - configMapRef:
+                name: mlflow-env-configmap
+            - secretRef:
+                name: mlflow-env-secret
+            - secretRef:
+                name: mlflow-flask-server-secret-key
+          command: ["python"]
+          args:
+            - /opt/mlflow/migrations.py
+          volumeMounts:
+            - name: migrations-config
+              mountPath: /opt/mlflow/migrations.py
+              subPath: migrations.py
+              readOnly: true
+      containers:
+        - name: mlflow
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+          image: "burakince/mlflow:3.1.1"
+          imagePullPolicy: IfNotPresent
+          command: ["mlflow"]
+          args:
+            - server
+            - --host=0.0.0.0
+            - --port=5000
+            - --backend-store-uri=postgresql://
+            - --default-artifact-root=./mlruns
+            - --gunicorn-opts='--log-level=info'
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 5
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 5
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 3
+          resources:
+            {}
+          env:
+            - name: MLFLOW_VERSION
+              value: "3.1.1"
+          envFrom:
+            - configMapRef:
+                name: mlflow-env-configmap
+            - secretRef:
+                name: mlflow-env-secret
+            - secretRef:
+                name: mlflow-flask-server-secret-key
+      volumes:
+        - name: migrations-config
+          configMap:
+            name: mlflow-migrations
