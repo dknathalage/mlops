@@ -1,0 +1,23 @@
+---
+# Source: jupyterhub/templates/hub/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hub-db-dir
+  labels:
+    component: hub
+    app.kubernetes.io/component: hub
+    app: "jupyterhub"
+    release: "jupyterhub"
+    chart: jupyterhub-4.2.0
+    heritage: Helm
+    app.kubernetes.io/name: "jupyterhub"
+    app.kubernetes.io/instance: "jupyterhub"
+    helm.sh/chart: jupyterhub-4.2.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "1Gi"

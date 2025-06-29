@@ -1,0 +1,55 @@
+---
+# Source: jupyterhub/templates/proxy/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-api
+  labels:
+    component: proxy-api
+    app.kubernetes.io/component: proxy-api
+    app: "jupyterhub"
+    release: "jupyterhub"
+    chart: jupyterhub-4.2.0
+    heritage: Helm
+    app.kubernetes.io/name: "jupyterhub"
+    app.kubernetes.io/instance: "jupyterhub"
+    helm.sh/chart: jupyterhub-4.2.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    component: proxy
+    app: "jupyterhub"
+    release: "jupyterhub"
+  ports:
+    - port: 8001
+      targetPort: api
+---
+# Source: jupyterhub/templates/proxy/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-public
+  labels:
+    component: proxy-public
+    app.kubernetes.io/component: proxy-public
+    app: "jupyterhub"
+    release: "jupyterhub"
+    chart: jupyterhub-4.2.0
+    heritage: Helm
+    app.kubernetes.io/name: "jupyterhub"
+    app.kubernetes.io/instance: "jupyterhub"
+    helm.sh/chart: jupyterhub-4.2.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    # This service will target the autohttps pod if autohttps is configured, and
+    # the proxy pod if not. When autohttps is configured, the service proxy-http
+    # will be around to target the proxy pod directly.
+    component: proxy
+    app: "jupyterhub"
+    release: "jupyterhub"
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  type: LoadBalancer

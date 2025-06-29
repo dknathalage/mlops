@@ -3,6 +3,7 @@ helm.add:
 	helm repo add zitadel https://charts.zitadel.com || true
 	helm repo add postgres https://charts.bitnami.com/bitnami || true
 	helm repo add community-charts https://community-charts.github.io/helm-charts || true
+	helm repo add jupyterhub https://hub.jupyter.org/helm-chart/ || true
 
 helm.update:
 	helm repo update
@@ -18,6 +19,10 @@ helm.render.mlflow:
 	rm -rf ./bases/mlflow/rendered
 	helm template mlflow community-charts/mlflow --values ./values/mlflow/mlflow.values.yaml --output-dir ./bases/mlflow/rendered
 	helm template postgres postgres/postgresql --values ./values/mlflow/postgres.values.yaml --output-dir ./bases/mlflow/rendered
+
+helm.render.jupyter:
+	rm -rf ./bases/jupyter/rendered
+	helm template jupyterhub jupyterhub/jupyterhub --values ./values/jupyter/jupyterhub.values.yaml --output-dir ./bases/jupyter/rendered
 
 render: helm.render
 

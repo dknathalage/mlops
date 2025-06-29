@@ -1,0 +1,31 @@
+---
+# Source: jupyterhub/templates/hub/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+  labels:
+    component: hub
+    app.kubernetes.io/component: hub
+    app: "jupyterhub"
+    release: "jupyterhub"
+    chart: jupyterhub-4.2.0
+    heritage: Helm
+    app.kubernetes.io/name: "jupyterhub"
+    app.kubernetes.io/instance: "jupyterhub"
+    helm.sh/chart: jupyterhub-4.2.0
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /hub/metrics
+    prometheus.io/port: "8081"
+spec:
+  type: ClusterIP
+  selector:
+    component: hub
+    app: "jupyterhub"
+    release: "jupyterhub"
+  ports:
+    - name: hub
+      port: 8081
+      targetPort: http
